@@ -4,6 +4,15 @@ alias use_$$NAME='source $$ACTIVATE; export FW_CONFIG_FILE=$FW_CONFIG_$$NAME; ex
 
 alias update_codes='python $SCRIPT_LOC/update_codes.py'
 
+if [[ "$HOSTNAME" =~ "mu0" ]] # SJTU Pi
+then
+   unset MODULEPATH
+   module use /lustre/usr/modulefiles/pi
+   module load anaconda/2
+   export FW_CONFIG_$$NAME='$$CONFIG_LOC/config_SjtuPi/FW_config.yaml'
+   export PATH=$PATH:$HOME/bin # for vasp and boltztrap
+fi
+
 if [ "$NERSC_HOST" == "matgen" ]
 then
    module load vim
@@ -25,11 +34,11 @@ fi
 if [ "$NERSC_HOST" == "edison" ]
 then
    module load python
-	module load numpy
+   module load numpy
    module load scipy
-	module load virtualenv
-	module load virtualenvwrapper
-	module load vasp/5.3.5
+   module load virtualenv
+   module load virtualenvwrapper
+   module load vasp/5.3.5
    export FW_CONFIG_$$NAME='$$CONFIG_LOC/config_Edison/FW_config.yaml'
    $$PACKMOL
 fi
@@ -63,7 +72,7 @@ then
         export FW_CONFIG_$$NAME='$$CONFIG_LOC/config_Mira/FW_config.yaml'
 fi
 
-alias use_none='deactivate; export FW_CONFIG_FILE=""; export DB_LOC=""; export VENV_LOC=""; export SCRIPT_LOC=""; echo "You are deactivated."'
+alias use_none='$$DEACTIVATE; export FW_CONFIG_FILE=""; export DB_LOC=""; export VENV_LOC=""; export SCRIPT_LOC=""; echo "You are deactivated."'
 $$MATERIALSPROJECT
 $$OPENBABEL
 # MPenv $$NAME end--->

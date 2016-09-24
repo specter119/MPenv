@@ -24,6 +24,7 @@ def create_env():
 
     parser.add_argument('name', help='directory containing environment files', default=None)
     parser.add_argument('--pymatpro', help='install pymatpro', action='store_true')
+    parser.add_argument('--conda', help='use conda instead of virtualenv', action='store_true')
 
     args = parser.parse_args()
     env_exists = os.path.exists(args.name)
@@ -49,7 +50,7 @@ def create_env():
     files_dir = os.path.join(root_dir, args.name+CONFIG_TAG)
     codes_dir = os.path.join(root_dir, args.name, 'codes')
 
-    MACHINES = ('Mendel', 'Vesta', 'Edison', 'Cori')  # note: you must modify BASH_template.txt when adding machines
+    MACHINES = ('Mendel', 'Vesta', 'Edison', 'Cori', 'SjtuPi')  # note: you must modify BASH_template.txt when adding machines
 
     print 'VALIDATING DIRECTORY'
     envtype = "FW"
@@ -76,9 +77,15 @@ def create_env():
     virtenv_exists = os.path.exists(os.path.join(root_dir, args.name, "virtenv_{}".format(args.name)))
 
     if not virtenv_exists:
-	c.append(('print', 'SETTING UP VIRTUALENV'))
-	c.append(("mkdir", "virtenv_{}".format(args.name)))
-	c.append("virtualenv --no-site-packages virtenv_{}".format(args.name))
+        c.append(('print', 'SETTING UP VIRTUALENV'))
+        if args.conda:
+            c.append("conda create --prefix virtenv_{} numpy scipy matplotlib".format(args.name))
+            c.append(('print', 'copying activate_this.py into virtualenv bin directory'))
+            c.append("cp {} {}".format(os.path.join(static_dir, 'activate_this.py'), os.path.join('virtenv_{}'.format(args.name), 'bin')))
+            # FIXME use_hz_mgi alias needs different source command with conda
+        else:
+            c.append(("mkdir", "virtenv_{}".format(args.name)))
+            c.append("virtualenv --no-site-packages virtenv_{}".format(args.name))
 
     c.append(('print', 'ACTIVATE VIRTUALENV'))
     c.append(("activate", os.path.join(root_dir, args.name, 'virtenv_{}/bin/activate_this.py'.format(args.name))))
@@ -218,7 +225,12 @@ def create_env():
                 shutil.copyfile(os.path.join(static_dir, command[1]), os.path.join(root_dir, args.name, 'config', 'scripts', command[1]))
             elif command[0] == 'append':
                 replacements = {}
-                replacements["ACTIVATE"] = os.path.join(root_dir, args.name, 'virtenv_{}/bin/activate'.format(args.name))
+                if MACHINES is 'SjtuPi':
+                     replacements["ACTIVATE"] = os.path.join(root_dir, args.name, 'activate virtenv_{}'.format(args.name))
+                     replacements["DEACTIVATE"] = "source deactivate"
+                else:
+                     replacements["ACTIVATE"] = os.path.join(root_dir, args.name, 'virtenv_{}/bin/activate'.format(args.name))
+                     replacements["DEACTIVATE"] = "deactivate"
                 replacements["CONFIG_LOC"] = os.path.join(root_dir, args.name, 'config')
                 replacements["ENV_LOC"] = os.path.join(root_dir, args.name)
                 replacements["LOGDIR"] = os.path.join(root_dir, args.name, 'config', 'logs')
