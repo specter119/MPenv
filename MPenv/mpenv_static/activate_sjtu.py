@@ -1,6 +1,5 @@
 """By using execfile(this_file, dict(__file__=this_file)) you will
 activate this virtualenv environment.
-
 This can be used when you must use an existing Python interpreter, not
 the virtualenv bin/python
 """
@@ -14,7 +13,7 @@ import sys
 import os
 
 old_os_path = os.environ.get('PATH', '')
-os.environ['PATH'] = os.path.dirname(os.path.abspath(__file__)) + os.pathsep old_os_path
+os.environ['PATH'] = os.path.dirname(os.path.abspath(__file__)) + os.pathsep + old_os_path
 base = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if sys.platform == 'win32':
     site_packages = os.path.join(base, 'Lib', 'site-packages')
