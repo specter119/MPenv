@@ -45,6 +45,13 @@ Part 1 - Install the MPenv code at NERSC and request an environment
    to the group by sending an e-mail to an administrator (Patrick Huck). Hopper
    has been retired as of January 2016.
 
+
+   Also, add the following line to your ``~/.bashrc.ext`` to export the
+   PIP_CERT environment variable to the path of the PEM file (see
+   http://stackoverflow.com/a/28724886)::
+
+    export PIP_CERT=/project/projectdirs/matgen/DigiCertHighAssuranceEVRootCA.pem
+
 2. Load necessary modules::
 
     # Edison
@@ -74,7 +81,6 @@ Part 1 - Install the MPenv code at NERSC and request an environment
     module swap numpy numpy/1.9.2
     module swap scipy scipy/0.14.0
     module load virtualenv
-    module load virtualenvwrapper
 
   .. note::
     See bullet #4 in Part 4 for the role of the intel module when updating
@@ -156,7 +162,6 @@ Part 2 - Install MP codes at NERSC
     module swap numpy numpy/1.9.2
     module swap scipy scipy/0.14.0
     module load virtualenv
-    module load virtualenvwrapper
 
 3. add GitHub ssh-key and activate the admin environment that allows you to use
    ``mpenv``::
@@ -207,11 +212,13 @@ customize. Here are a few.
    you are using Hopper to run VASP, you *must* change the mppwidth to 48.
    Repeat for all machines that you're using.
 
-2. Since ``Mendel`` is using SLURM, you'll also need to add the following to
-   ``my_fworker.yaml`` to run VASP on multiple nodes in parallel::
+2. Since ``Mendel`` is using SLURM, you'll need to add ``mpi_cmd`` to
+   ``my_fworker.yaml`` to run VASP on multiple nodes in parallel. Also
+   explicitly add the vasp command to be used on ``Mendel``::
 
     env:
         mpi_cmd: srun
+        vasp_cmd: /usr/common/usg/vasp/5.4.1/bin/vasp
 
 3. In your ``.bashrc.ext``, you'll want to add two lines (if not already done
    by ``mpenv``)::
@@ -224,6 +231,11 @@ customize. Here are a few.
    features of the code (e.g. VASP input generation) won't work without these.
    Note that members of the ``matgen`` group at NERSC should be able to set
    their <PATH_TO_POTCARS> as ``/project/projectdirs/matgen/POTCARs``.
+
+   Starting with pymatgen 5.0, these two environment variables should be saved
+   in ``~/.pmgrc.yaml``. You can make the simple switch via::
+
+   pmg config -a MAPI_KEY $MAPI_KEY VASP_PSP_DIR $VASP_PSP_DIR
 
 4. If you modify your ``bashrc.ext``, remember the changes are not applied
    unless you type ``source ~/.bashrc.ext``.
@@ -303,7 +315,6 @@ When you're ready to begin (logged into NERSC):
     module swap numpy numpy/1.9.2
     module swap scipy scipy/0.14.0
     module load virtualenv
-    module load virtualenvwrapper
 
 4. Add your GitHub sshkey and activate your admin environment::
 
