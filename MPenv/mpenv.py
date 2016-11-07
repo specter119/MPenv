@@ -254,7 +254,7 @@ def create_env():
             elif command[0] == 'append':
                 replacements = {}
                 if MACHINES is 'SjtuPi':
-                    replacements["ACTIVATE"] = os.path.join(root_dir, args.name, 'activate virtenv_{}'.format(args.name))
+                    replacements["ACTIVATE"] = "activate "+os.path.join(root_dir, args.name, 'virtenv_{}'.format(args.name))
                     replacements["DEACTIVATE"] = "source deactivate"
                 else:
                     replacements["ACTIVATE"] = os.path.join(root_dir, args.name, 'virtenv_{}/bin/activate'.format(args.name))
