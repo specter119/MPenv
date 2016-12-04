@@ -64,10 +64,10 @@ Part 1 - Install the MPenv code at NERSC and request an environment
     unset MODULEPATH
     module use /lustre/usr/modulefiles/pi
     module load anaconda/2
-    module load mkl/default
-    module load icc/default
-    module load gcc/default
-    module load impi/default
+    module load mkl/11.2
+    module load icc/15.0
+    module load gcc/4.9
+    module load impi/5.0
 
     # Cori
     module load python
@@ -149,6 +149,15 @@ Part 2 - Install MP codes at NERSC
     module load numpy/1.9.2
     module load virtualenv
     module load virtualenvwrapper
+
+    # SJTU Pi
+    unset MODULEPATH
+    module use /lustre/usr/modulefiles/pi
+    module load anaconda/2
+    module load mkl/11.2
+    module load icc/15.0
+    module load gcc/4.9
+    module load impi/5.0
 
     # Cori
     module load python
