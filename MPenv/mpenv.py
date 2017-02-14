@@ -89,15 +89,15 @@ def create_env():
         c.append(('print', 'SETTING UP VIRTUALENV'))
         if args.conda:
             c.append("conda create --prefix virtenv_{} numpy scipy matplotlib".format(args.name))
-            c.append(('print', 'copying activate_sjtu.py into virtualenv bin directory'))
-            c.append("cp {} {}".format(os.path.join(static_dir, 'activate_sjtu.py'), os.path.join('virtenv_{}'.format(args.name), 'bin')))
+            c.append(('print', 'copying activate_this.py into virtualenv bin directory'))
+            c.append("cp {} {}".format(os.path.join(static_dir, 'activate_this.py'), os.path.join('virtenv_{}'.format(args.name), 'bin')))
             # FIXME use_hz_mgi alias needs different source command with conda
         else:
             c.append(("mkdir", "virtenv_{}".format(args.name)))
             c.append("virtualenv --no-site-packages virtenv_{}".format(args.name))
 
     c.append(('print', 'ACTIVATE VIRTUALENV'))
-    c.append(("activate", os.path.join(root_dir, args.name, 'virtenv_{}/bin/activate_sjtu.py'.format(args.name))))
+    c.append(("activate", os.path.join(root_dir, args.name, 'virtenv_{}/bin/activate_this.py'.format(args.name))))
     c.append(("mkdir", "codes"))
     c.append(("cd", 'codes'))
 

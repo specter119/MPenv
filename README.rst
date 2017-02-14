@@ -115,6 +115,8 @@ Part 1 - Install the MPenv code at NERSC and request an environment
      ``ssh-keygen -t dsa`` (hit enter at all prompts) and then copying your
      ``~/.ssh/id_dsa.pub`` file to your Github account (log into github.com,
      click account settings at top-right, then the 'SSH keys' section).
+     Otherwise you can simply set:
+        git config --global url."https://github.com/".insteadOf git@github.com:
 
 3. Type ``which mpenv``. If the installation was successful, the system should
    find an executable.
