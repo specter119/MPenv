@@ -4,7 +4,7 @@ import subprocess
 
 def update_code():
     subprocess.check_call('git pull', shell=True, executable="/bin/bash")
-    subprocess.check_call('python setup.py develop', shell=True, executable="/bin/bash")
+    subprocess.check_call('pip install -e .', shell=True, executable="/bin/bash")
 
 if __name__ == '__main__':
     db_loc = os.environ['DB_LOC']
@@ -13,8 +13,8 @@ if __name__ == '__main__':
 
     for d in os.listdir(codes_loc):
         m_dir = os.path.join(codes_loc, d)
-        print 'changing to', m_dir
-        print 'updating', d
+        print('changing to {}'.format(m_dir))
+        print('updating {}'.format(d))
         os.chdir(m_dir)
         update_code()
 

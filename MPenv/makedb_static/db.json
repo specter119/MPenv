@@ -4,8 +4,6 @@
     "port": $PORT,
     "admin_password": "$PW",
     "admin_user": "$USER",
-    "collection": "molecules",
-    "aliases_config": null,
-    "readonly_password": "$PW",
-    "readonly_user": "$USER"
+    "collection": "tasks",
+    "aliases": {}
 }

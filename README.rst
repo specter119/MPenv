@@ -96,7 +96,7 @@ Part 1 - Install the MPenv code at NERSC and request an environment
     eval `ssh-agent -s` && ssh-add <path-to-private-github-key>
     git clone git@github.com:materialsproject/MPenv.git
     cd MPenv
-    python setup.py develop
+    pip install -e .
 
     # on SJTU Pi
     mkdir admin_env
@@ -105,7 +105,7 @@ Part 1 - Install the MPenv code at NERSC and request an environment
     cd admin_env
     git clone https://github.com/materialsproject/MPenv.git
     cd MPenv
-    python setup.py develop
+    pip install -e .
 
   .. note::
    * If the virtualenv command fails, make sure you have set your *default*
@@ -269,7 +269,7 @@ Part 4 - Modifying or updating your codebases
 
 3. You can also ``git pull`` individually within the repos inside
    ``<ENV_NAMES>/codes``. If the version number changed, then you also need to
-   run ``python setup.py develop``.
+   run ``pip install -e .``.
 
 4. On matgen, you need to *unload* the intel module when trying to build and/or
    install python code! However, make sure to load the intel module again
@@ -386,7 +386,7 @@ Managing an admin_env
 #. Activate your ``admin_env`` environment.
 
 #. ``cd`` in your admin_env/MP_env directory, and then run ``git pull`` and
-   (maybe) ``python setup.py develop``.
+   (maybe) ``pip install -e .``.
 
 #. Start in a directory where you archive all the environments that you've
    made. For me, it is ``$HOME/envs``.

@@ -10,11 +10,10 @@ walltime: '24:00:00'
 queue: Q.prod-short
 account: JCESR
 job_name: null
-pre_rocket: |
-            #PBS -v DB_LOC,FW_CONFIG_FILE,VENV_LOC
+pre_rocket: |+
+  #PBS -v DB_LOC,FW_CONFIG_FILE,VENV_LOC
 
-            source $VENV_LOC
-            echo $(env | grep COBALT)
-
+  source $VENV_LOC
+  echo $(env | grep COBALT)
 post_rocket: null
 logdir: $$CONFIG_LOC/logs

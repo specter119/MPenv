@@ -13,6 +13,7 @@ __maintainer__ = 'Anubhav Jain'
 __email__ = 'ajain@lbl.gov'
 __date__ = 'Aug 21, 2013'
 
+
 def create_db():
 
     m_description = 'This program creates databases for MP environments.'
@@ -23,8 +24,8 @@ def create_db():
 
     args = parser.parse_args()
 
-    if args.type != 'FW' and args.type != 'MP' and args.type != 'rubicon':
-        raise ValueError("Invalid type! Choose from FW, MP, rubicon")
+    if args.type not in ['FW', 'atomate', 'MP', 'rubicon', ]:
+        raise ValueError("Invalid type! Choose from FW, atomate, MP, rubicon")
 
     module_dir = os.path.dirname(os.path.abspath(__file__))
     static_dir = os.path.join(module_dir, 'makedb_static')
@@ -32,7 +33,7 @@ def create_db():
     ENV_NAME = args.name
     curr_dir = os.getcwd()
     env_dir = os.path.join(curr_dir, ENV_NAME+CONFIG_TAG)
-    os.makedirs(env_dir)
+    os.makedirs(env_dir, exist_ok=True)
 
     with open(os.path.join(module_dir, "private", "admin_creds.yaml")) as f:
         creds = yaml.load(f.read())
@@ -47,7 +48,9 @@ def create_db():
 
         dbs_to_make = [('fw_{}', 'my_launchpad.yaml')]
 
-        if args.type == 'MP' or args.type == 'rubicon':
+        if args.type == 'atomate':
+            dbs_to_make.append(('vasp_{}', 'db.json'))
+        if args.type in ['MP', 'rubicon']:
             dbs_to_make.append(('snl_{}', 'snl_db.yaml'))
             dbs_to_make.append(('submission_{}', 'submission_db.yaml'))
             dbs_to_make.append(('vasp_{}', 'tasks_db.json'))
@@ -66,12 +69,14 @@ def create_db():
                 with open(os.path.join(env_dir, d[1]), 'w+') as f3:
                     f3.write(contents)
 
+
 def make_password():
     length = 8
     chars = string.ascii_letters + string.digits + '!@#$%^&*()'
     random.seed = (os.urandom(1024))
 
     return ''.join(random.choice(chars) for i in range(length))
+
 
 if __name__ == '__main__':
     create_db()

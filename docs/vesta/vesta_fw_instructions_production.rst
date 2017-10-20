@@ -80,7 +80,7 @@ Getting started
     git clone git@github.com:materialsproject/MPenv.git
     cd MPenv
     perl -p -i -e 's/virtualenv --no-site-packages/virtualenv --system-site-packages/g' MPenv/mpenv.py
-    python setup.py develop
+    pip install -e .
 
 4. As the install progresses, almost everything should install automatially. In general, if a component gets hung up on install, one needs to track down a line with ``--no-site-packages`` and replace it with ``--system-site-packages`` to force the use of the site version we installed.
     
